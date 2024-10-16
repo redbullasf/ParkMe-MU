@@ -1,93 +1,100 @@
-# ParkMe - MU
+# Campus Parking Management Web Application
 
+![Project Banner](./frontend/assets/banner.png) <!-- Replace with an actual image if available -->
 
+## Table of Contents
 
-## Getting started
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Technologies Used](#technologies-used)
+- [Demo](#demo)
+- [Installation](#installation)
+    - [Prerequisites](#prerequisites)
+    - [Backend Setup](#backend-setup)
+    - [Frontend Setup](#frontend-setup)
+- [Usage](#usage)
+    - [Check In](#check-in)
+    - [Check Out](#check-out)
+- [Project Structure](#project-structure)
+- [API Documentation](#api-documentation)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+---
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+## Project Overview
 
-## Add your files
+The **Campus Parking Management Web Application** is a comprehensive solution designed to streamline parking management at Maynooth University. This application allows users to **check in** to parking spots, view real-time **parking availability** on an interactive map, and monitor **parking occupancy** through dynamic charts. The system enhances user experience by providing intuitive interfaces and real-time data updates, ensuring efficient parking utilization across the campus.
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+---
 
-```
-cd existing_repo
-git remote add origin https://gitlab.cs.nuim.ie/u220180/parkme-mu.git
-git branch -M main
-git push -uf origin main
-```
+## Features
 
-## Integrate with your tools
+- **User Authentication**: Secure login and registration system (optional enhancement).
+- **Interactive Parking Map**: View available and occupied parking spots on a dynamic map using **Leaflet.js**.
+- **Real-Time Updates**: Live updates on parking spot availability and user locations.
+- **Parking Occupancy Chart**: Visual representation of parking occupancy from **6 AM to 6 PM** using **Chart.js**.
+- **Check-In/Check-Out Functionality**: Easily check in to a parking spot and check out when leaving.
+- **Responsive Design**: Optimized for desktops, tablets, and mobile devices using **Bootstrap**.
+- **Backend API**: Robust backend built with **Express.js** and **MongoDB** for data management.
 
-- [ ] [Set up project integrations](https://gitlab.cs.nuim.ie/u220180/parkme-mu/-/settings/integrations)
+---
 
-## Collaborate with your team
+## Technologies Used
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+- **Frontend:**
+    - HTML5 & CSS3
+    - JavaScript (ES6+)
+    - [Bootstrap 4](https://getbootstrap.com/)
+    - [Leaflet.js](https://leafletjs.com/) for interactive maps
+    - [Chart.js](https://www.chartjs.org/) for data visualization
 
-## Test and Deploy
+- **Backend:**
+    - [Node.js](https://nodejs.org/) (v20.17.0)
+    - [Express.js](https://expressjs.com/)
+    - [MongoDB](https://www.mongodb.com/) with [Mongoose](https://mongoosejs.com/) ODM
 
-Use the built-in continuous integration in GitLab.
+- **Version Control:**
+    - [Git](https://git-scm.com/)
+    - [GitLab](https://gitlab.com/) for repository hosting
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+- **Development Tools:**
+    - [WebStorm](https://www.jetbrains.com/webstorm/) IDE
+    - [Nodemon](https://nodemon.io/) for automatic server restarts
 
-***
+---
 
-# Editing this README
+## Demo
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+![Parking Map](./frontend/assets/map_screenshot.png) <!-- Replace with actual screenshots -->
+*Interactive parking map displaying available and occupied spots.*
 
-## Suggestions for a good README
+![Parking Occupancy Chart](./frontend/assets/chart_screenshot.png) <!-- Replace with actual screenshots -->
+*Bar chart showing parking occupancy from 6 AM to 6 PM.*
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
-
-## Name
-Choose a self-explaining name for your project.
-
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
-
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
-
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+---
 
 ## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+To set up and run the **Campus Parking Management Web Application** locally, follow the steps below.
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Prerequisites
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Ensure you have the following installed on your system:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+- **Node.js** (v14.x or later)
+- **npm** (comes bundled with Node.js)
+- **MongoDB**:
+    - **Local Installation**: [Download MongoDB](https://www.mongodb.com/try/download/community)
+    - **MongoDB Atlas**: [Sign Up for MongoDB Atlas](https://www.mongodb.com/cloud/atlas) for a cloud-based solution
+- **Git**: [Install Git](https://git-scm.com/downloads)
+- **WebStorm** or any other preferred code editor
+- **Live Server Extension** (optional, for serving frontend)
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+### Backend Setup
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+1. **Clone the Repository**
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+   ```bash
+   git clone https://gitlab.com/yourusername/your-repo.git
