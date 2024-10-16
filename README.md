@@ -94,6 +94,6 @@ Ensure you have the following installed on your system:
 
 ### Backend Setup
 
-1. **Clone the Repository**
+1. **Clone the  Repository**
 
    ```bash
