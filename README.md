@@ -97,4 +97,3 @@ Ensure you have the following installed on your system:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://gitlab.com/yourusername/your-repo.git
