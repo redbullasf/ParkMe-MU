@@ -1,5 +1,3 @@
-// server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
@@ -17,7 +15,6 @@ const corsOptions = {
     credentials: true,
     optionsSuccessStatus: 204
 };
-
 
 app.use(cors(corsOptions));
 
