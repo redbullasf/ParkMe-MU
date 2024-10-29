@@ -1,6 +1,6 @@
 # Campus Parking Management Web Application
 
-![Project Banner](./frontend/assets/banner.png) <!-- Replace with an actual image if available -->
+
 
 ## Table of Contents
 

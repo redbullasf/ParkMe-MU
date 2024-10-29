@@ -1,39 +1,133 @@
-<!-- map.html -->
-
+<!-- frontend/map.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parking Map - Maynooth University</title>
+    <title>Parking Map</title>
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Leaflet CSS for Maps -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
+    <!-- Leaflet.AwesomeMarkers CSS (optional) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    <style>
+        /* Additional styles if necessary */
+        #legend {
+            background: white;
+            padding: 10px;
+            line-height: 1.5;
+            position: absolute;
+            bottom: 30px;
+            left: 10px;
+            z-index: 1000;
+            border-radius: 5px;
+            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+        }
+        .modal {
+            display: none; /* Hidden by default */
+            position: fixed; /* Stay in place */
+            z-index: 1000; /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%; /* Full width */
+            height: 100%; /* Full height */
+            overflow: auto; /* Enable scroll if needed */
+            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 10% auto; /* 10% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 50%; /* Could be more or less, depending on screen size */
+            border-radius: 10px;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
 <!-- Navbar -->
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="index.html">Maynooth Parking</a>
+    <a class="navbar-brand" href="#">Maynooth Parking</a>
 </nav>
 
-<!-- Main Content -->
-<div class="container mt-4">
-    <h3>Your Parking Location</h3>
-    <div id="map" style="height: 500px;"></div>
+<!-- Header -->
+<header class="text-center mt-4">
+    <h1>Parking Map</h1>
+    <button id="backBtn" class="btn btn-danger">Back to Home</button>
+</header>
+
+<!-- Map Container -->
+<div id="map" style="height: 600px;"></div>
+
+<!-- Recommendation Section -->
+<div id="recommendation" class="text-center my-4">
+    <h2>Recommended Parking Spot:</h2>
+    <p id="recommendedSpot">Loading recommendation...</p>
+    <button id="confirmBtn" class="btn btn-primary">Confirm Arrival</button>
+</div>
+
+<!-- Legend -->
+<div id="legend">
+    <h3>Parking Spot Status</h3>
+    <i class="fa fa-car" style="color: green;"></i> Available<br>
+    <i class="fa fa-car" style="color: red;"></i> Occupied<br>
+    <i class="fa fa-thumbs-up" style="color: blue;"></i> Recommended
+</div>
+
+<!-- Questionnaire Modal -->
+<div id="questionnaireModal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Parking Experience</h2>
+        <form id="questionnaireForm">
+            <div class="form-group">
+                <label>Is the parking spot busy?</label><br>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="busy" id="busyYes" value="yes" required>
+                    <label class="form-check-label" for="busyYes">Yes</label>
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="radio" name="busy" id="busyNo" value="no">
+                    <label class="form-check-label" for="busyNo">No</label>
+                </div>
+            </div>
+            <!-- Optionally, include busy level -->
+            <!--
+            <div class="form-group">
+                <label for="busyLevel">Busy Level (1-10)</label>
+                <input type="number" class="form-control" id="busyLevel" name="busyLevel" min="1" max="10" required>
+            </div>
+            -->
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
 </div>
 
 <!-- Include Scripts -->
+<!-- Leaflet JS -->
+<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+<!-- Leaflet.AwesomeMarkers JS (optional) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
 <!-- jQuery, Popper.js, Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Leaflet.js -->
-<script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<!-- Frontend JavaScript for Map Page -->
+<!-- Chart.js (Optional: If you have charts on map.html) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Frontend JavaScript for map.html -->
 <script src="js/map.js"></script>
 </body>
 </html>

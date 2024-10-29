@@ -1,21 +1,126 @@
-/* css/styles.css */
+/* frontend/css/styles.css */
 
-/* General Styles */
 body {
-    padding-top: 56px; /* Adjust if you have a fixed navbar */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
 }
 
-/* Map Container */
-#map {
-    width: 100%;
-    height: 500px;
+header {
+    background-color: #4CAF50;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
 }
+
+header h1 {
+    margin: 0;
+}
+
+/* Check-In Button */
+#checkInBtn {
+    background-color: #008CBA; /* Blue */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 20px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease;
+}
+
+#checkInBtn:hover {
+    background-color: #005f6a;
+}
+
+/* Back Button */
+#backBtn {
+    background-color: #f44336; /* Red */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 14px;
+    margin: 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#backBtn:hover {
+    background-color: #da190b;
+}
+
+/* Recommendation Section */
+#recommendation {
+    margin: 20px auto;
+    width: 80%;
+    max-width: 600px;
+    padding: 20px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #fff;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+#recommendation h2 {
+    margin-top: 0;
+    color: #333;
+}
+
+#recommendation p {
+    font-size: 18px;
+    color: #555;
+}
+
+#recommendation button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin-top: 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+#recommendation button:hover {
+    background-color: #45a049;
+}
+
+/* Modal Styles (already included inline in map.html) */
 
 /* Responsive Design */
-@media (max-width: 768px) {
+@media (max-width: 600px) {
     #map {
-        height: 300px;
+        height: 400px;
+    }
+
+    #recommendation {
+        width: 95%;
     }
 }
 
-/* Additional custom styles as needed */
+/* frontend/css/styles.css */
+
+/* Ensure modal has higher z-index */
+.modal {
+    z-index: 1050 !important;
+}
+
+/* Ensure backdrop is correctly positioned */
+.modal-backdrop {
+    z-index: 1040 !important;
+}

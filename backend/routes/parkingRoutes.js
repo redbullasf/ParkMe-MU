@@ -1,13 +1,14 @@
-// routes/parkingRoutes.js
+// backend/routes/parkingRoutes.js
 
 const express = require('express');
 const router = express.Router();
 const ParkingSpot = require('../models/ParkingSpot');
 
-// GET all parking spots
+// GET /api/parking
+// Retrieves all parking spots
 router.get('/', async (req, res) => {
     try {
-        const parkingSpots = await ParkingSpot.find();
+        const parkingSpots = await ParkingSpot.find({});
         res.json(parkingSpots);
     } catch (error) {
         console.error('Error fetching parking spots:', error);
@@ -15,68 +16,72 @@ router.get('/', async (req, res) => {
     }
 });
 
-// POST check-in
-router.post('/checkin', async (req, res) => {
-    const { userId, parkingId, isBusy, busyLevel } = req.body;
+// GET /api/parking/recommendation
+// Retrieves a recommended available parking spot
+router.get('/recommendation', async (req, res) => {
     try {
-        const parkingSpot = await ParkingSpot.findById(parkingId);
-        if (!parkingSpot) {
-            return res.status(404).json({ message: 'Parking spot not found.' });
+        // Example recommendation logic: first available spot
+        const recommendedSpot = await ParkingSpot.findOne({ isAvailable: true });
+
+        if (!recommendedSpot) {
+            return res.status(404).json({ message: 'No available parking spots at the moment.' });
         }
-        if (!parkingSpot.isAvailable) {
-            return res.status(400).json({ message: 'Parking spot is already occupied.' });
-        }
 
-        // Update parking spot
-        parkingSpot.isAvailable = false;
-        parkingSpot.currentUser = userId;
-        parkingSpot.busy = isBusy;
-        parkingSpot.busyLevel = busyLevel;
-
-        await parkingSpot.save();
-
-        res.json({ message: 'Check-in successful', parkingSpot });
+        res.json(recommendedSpot);
     } catch (error) {
-        console.error('Error during check-in:', error);
-        res.status(500).json({ message: 'Server Error: Unable to perform check-in.' });
+        console.error('Error fetching recommended parking spot:', error);
+        res.status(500).json({ message: 'Server Error: Unable to fetch recommendation.' });
     }
 });
 
-// POST check-out
-router.post('/checkout', async (req, res) => {
-    const { userId, parkingId } = req.body;
+// POST /api/parking/:id/feedback
+// Submits feedback for a specific parking spot
+router.post('/:id/feedback', async (req, res) => {
+    const { id } = req.params;
+    const { busy } = req.body;
+
     try {
-        const parkingSpot = await ParkingSpot.findById(parkingId);
+        const parkingSpot = await ParkingSpot.findById(id);
         if (!parkingSpot) {
             return res.status(404).json({ message: 'Parking spot not found.' });
         }
-        if (parkingSpot.isAvailable || parkingSpot.currentUser !== userId) {
-            return res.status(400).json({ message: 'No active parking session found for this user.' });
-        }
 
-        // Update parking spot
-        parkingSpot.isAvailable = true;
-        parkingSpot.currentUser = null;
-        parkingSpot.busy = false;
-        parkingSpot.busyLevel = 0;
+        // Update parking spot status based on feedback
+        if (busy === 'yes') {
+            parkingSpot.busy = true;
+            parkingSpot.busyLevel += 1;
+            parkingSpot.isAvailable = false; // Assuming busy implies occupied
+        } else if (busy === 'no') {
+            parkingSpot.busy = false;
+            parkingSpot.isAvailable = true;
+        } else {
+            return res.status(400).json({ message: 'Invalid feedback value.' });
+        }
 
         await parkingSpot.save();
 
-        res.json({ message: 'Check-out successful', parkingSpot });
+        res.json({ message: 'Feedback received and parking spot updated.' });
     } catch (error) {
-        console.error('Error during check-out:', error);
-        res.status(500).json({ message: 'Server Error: Unable to perform check-out.' });
+        console.error('Error submitting feedback:', error);
+        res.status(500).json({ message: 'Server Error: Unable to submit feedback.' });
     }
 });
 
-// GET parking status (for real-time updates or chart data)
-router.get('/status', async (req, res) => {
+// GET /api/parking/occupancy
+// Retrieves data for parking occupancy chart
+router.get('/occupancy', async (req, res) => {
     try {
-        const parkingSpots = await ParkingSpot.find();
-        res.json(parkingSpots);
+        const totalSpots = await ParkingSpot.countDocuments({});
+        const occupiedSpots = await ParkingSpot.countDocuments({ isAvailable: false });
+        const availableSpots = totalSpots - occupiedSpots;
+
+        res.json({
+            labels: ['Available', 'Occupied'],
+            values: [availableSpots, occupiedSpots]
+        });
     } catch (error) {
-        console.error('Error fetching parking status:', error);
-        res.status(500).json({ message: 'Server Error: Unable to fetch parking status.' });
+        console.error('Error fetching occupancy data:', error);
+        res.status(500).json({ message: 'Server Error: Unable to fetch occupancy data.' });
     }
 });
 
