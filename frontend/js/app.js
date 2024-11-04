@@ -1,167 +1,84 @@
 // frontend/js/app.js
 
 document.addEventListener('DOMContentLoaded', () => {
-    const checkInBtn = document.getElementById('checkInBtn');
-    const checkOutBtn = document.getElementById('checkOutBtn');
-    const checkoutModal = $('#checkoutModal'); // Using jQuery for Bootstrap modal
-    const confirmCheckoutBtn = document.getElementById('confirmCheckoutBtn');
-
-    // Handle "Check In" button click
-    if (checkInBtn) {
-        checkInBtn.addEventListener('click', () => {
-            // Navigate to map.html
-            window.location.href = 'map.html';
-        });
-    } else {
-        console.error('Check-In button not found');
-    }
-
-    // Handle "Check Out" button click
-    if (checkOutBtn) {
-        checkOutBtn.addEventListener('click', () => {
-            // Show the check-out confirmation modal
-            checkoutModal.modal('show');
-        });
-    } else {
-        console.error('Check-Out button not found');
-    }
-
-    // Handle "Confirm Check-Out" button click
-    if (confirmCheckoutBtn) {
-        confirmCheckoutBtn.addEventListener('click', () => {
-            // Implement your check-out logic here
-            // For example, make an API call to update the parking spot status
-
-            // After successful check-out, close the modal and navigate back to home
-            checkoutModal.modal('hide');
-            alert('You have successfully checked out.');
-            // Optionally, navigate back to home
-            window.location.href = 'index.html';
-        });
-    } else {
-        console.error('Confirm Check-Out button not found');
-    }
-
     // Initialize Parking Occupancy Chart
     initializeParkingChart();
 });
 
-// Initialize Parking Chart
+/**
+ * Fetches parking occupancy data from the backend and renders the chart.
+ * For now, we'll use fake data.
+ */
 function initializeParkingChart() {
-    console.log('Initializing parking chart');
     const ctx = document.getElementById('parkingChart').getContext('2d');
 
-    fetch('http://localhost:5001/api/parking/occupancy') // Ensure this endpoint exists
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Failed to fetch occupancy data.');
+    // Fake data for parking occupancy by hour (8 AM - 8 PM)
+    const fakeData = {
+        labels: [
+            '8 AM', '9 AM', '10 AM', '11 AM', '12 PM',
+            '1 PM', '2 PM', '3 PM', '4 PM', '5 PM',
+            '6 PM', '7 PM', '8 PM'
+        ],
+        values: [20, 35, 50, 65, 80, 75, 70, 85, 90, 95, 80, 60, 40] // Percentage full
+    };
+
+    // Create the bar chart
+    const parkingChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: fakeData.labels, // Hours from 8 AM to 8 PM
+            datasets: [{
+                label: 'Parking Occupancy (%)',
+                data: fakeData.values, // Percentage full
+                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Semi-transparent blue
+                borderColor: 'rgba(54, 162, 235, 1)', // Solid blue border
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false, // Allows the chart to resize within its container
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        max: 100, // Maximum value set to 100%
+                        callback: function(value) {
+                            return value + '%'; // Append '%' to y-axis labels
+                        }
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Percentage Full (%)'
+                    }
+                }],
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Time of Day'
+                    }
+                }]
+            },
+            title: {
+                display: true,
+                text: 'Parking Occupancy by Hour in Maynooth',
+                fontSize: 18
+            },
+            legend: {
+                display: false
+            },
+            tooltips: {
+                enabled: true,
+                callbacks: {
+                    label: function(tooltipItem, data) {
+                        return tooltipItem.yLabel + '%';
+                    }
+                }
+            },
+            hover: {
+                mode: 'nearest',
+                intersect: true
             }
-            return response.json();
-        })
-        .then(data => {
-            console.log('Occupancy data fetched:', data);
-            const labels = data.labels; // ['Available', 'Occupied']
-            const occupancyData = data.values; // [availableSpots, occupiedSpots]
-
-            const parkingChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'Number of Parking Spots',
-                        data: occupancyData,
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.2)', // Available
-                            'rgba(255, 99, 132, 0.2)'  // Occupied
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)', // Available
-                            'rgba(255, 99, 132, 1)'  // Occupied
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0,
-                            title: {
-                                display: true,
-                                text: 'Number of Spots'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Status'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    }
-                }
-            });
-
-            window.parkingChart = parkingChart;
-        })
-        .catch(error => {
-            console.error('Error fetching chart data:', error);
-            alert('Unable to load parking occupancy data at this time. Please try again later.');
-
-            // Initialize chart with default or empty data
-            const parkingChart = new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: ['Available', 'Occupied'],
-                    datasets: [{
-                        label: 'Number of Parking Spots',
-                        data: [0, 0],
-                        backgroundColor: [
-                            'rgba(75, 192, 192, 0.2)', // Available
-                            'rgba(255, 99, 132, 0.2)'  // Occupied
-                        ],
-                        borderColor: [
-                            'rgba(75, 192, 192, 1)', // Available
-                            'rgba(255, 99, 132, 1)'  // Occupied
-                        ],
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            precision: 0,
-                            title: {
-                                display: true,
-                                text: 'Number of Spots'
-                            }
-                        },
-                        x: {
-                            title: {
-                                display: true,
-                                text: 'Status'
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            enabled: true
-                        }
-                    }
-                }
-            });
-
-            window.parkingChart = parkingChart;
-        });
+        }
+    });
 }

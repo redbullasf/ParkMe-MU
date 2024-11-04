@@ -1,120 +1,110 @@
 /* frontend/css/styles.css */
 
-body {
-    font-family: Arial, sans-serif;
+/* Reset some default margins and paddings */
+body, h1, h2, p, ul, li {
     margin: 0;
     padding: 0;
-    background-color: #f4f4f4;
 }
 
-header {
-    background-color: #4CAF50;
-    color: white;
-    padding: 20px 0;
-    text-align: center;
+/* Body Styling */
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    background-color: #DCDCDC; /* Light background for overall page */
 }
 
-header h1 {
-    margin: 0;
+/* Hero Section Styling */
+#hero {
+    background-image: url('../images/hero-background.jpg'); /* Ensure the path is correct */
+    background-size: cover;
+    background-position: center;
+    height: 80vh; /* Adjust the height as needed */
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
-/* Check-In Button */
-#checkInBtn {
-    background-color: #008CBA; /* Blue */
-    border: none;
-    color: white;
-    padding: 15px 32px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 20px;
-    cursor: pointer;
-    border-radius: 8px;
-    transition: background-color 0.3s ease;
+#hero::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+    z-index: 1;
 }
 
-#checkInBtn:hover {
-    background-color: #005f6a;
+#hero .container {
+    position: relative;
+    z-index: 2;
+    max-width: 800px; /* Limit the width for better readability */
 }
 
-/* Back Button */
-#backBtn {
-    background-color: #f44336; /* Red */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 14px;
-    margin: 20px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+#hero h1.display-4 {
+    font-size: 3rem;
+    font-weight: bold;
 }
 
-#backBtn:hover {
-    background-color: #da190b;
+#hero p.lead {
+    font-size: 1.5rem;
 }
 
-/* Recommendation Section */
-#recommendation {
-    margin: 20px auto;
-    width: 80%;
-    max-width: 600px;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #fff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    text-align: center;
-}
-
-#recommendation h2 {
-    margin-top: 0;
-    color: #333;
-}
-
-#recommendation p {
-    font-size: 18px;
-    color: #555;
-}
-
-#recommendation button {
-    background-color: #4CAF50; /* Green */
-    border: none;
-    color: white;
-    padding: 10px 20px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin-top: 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
-
-#recommendation button:hover {
-    background-color: #45a049;
-}
-
-/* Modal Styles (already included inline in map.html) */
-
-/* Responsive Design */
-@media (max-width: 600px) {
-    #map {
-        height: 400px;
+@media (max-width: 768px) {
+    #hero h1.display-4 {
+        font-size: 2.5rem;
     }
-
-    #recommendation {
-        width: 95%;
+    #hero p.lead {
+        font-size: 1.2rem;
     }
 }
 
-/* frontend/css/styles.css */
+/* Navbar Customizations */
+.navbar {
+    background-color: #778899 !important; /* Navy Blue */
+}
 
+.navbar .navbar-brand, .navbar .nav-link {
+    color: #ffffff !important; /* White Text */
+}
+
+.navbar .nav-link:hover {
+    color: #ffd700 !important; /* Gold on Hover */
+}
+
+/* Parking Occupancy Graph Styling */
+#parkingGraph {
+    /* Ensures the graph section doesn't stretch */
+    padding: 2rem 0;
+}
+
+.chart-container {
+    position: relative;
+    height: 40vh;
+    width: 80vw;
+    max-width: 800px; /* Prevents excessive width on large screens */
+    margin: auto; /* Centers the graph */
+    background-color: #ffffff; /* White background for the graph area */
+    border: 1px solid #dee2e6; /* Light border for definition */
+    border-radius: 5px; /* Slightly rounded corners */
+    padding: 1rem; /* Inner padding */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+/* Footer Styling */
+footer {
+    background-color: #778899;
+    color: #778899;
+    position: relative;
+    bottom: 0;
+    width: 100%;
+}
+
+/* Optional: Smooth Scrolling */
+html {
+    scroll-behavior: smooth;
+}
 /* Ensure modal has higher z-index */
 .modal {
     z-index: 1050 !important;

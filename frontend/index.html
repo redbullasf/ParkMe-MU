@@ -3,70 +3,77 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Maynooth University Parking Management</title>
-    <!-- Bootstrap CSS -->
+    <title>ParkMe | MU</title>
+    <!-- Responsive Meta Tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap 4 CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Maynooth Parking</a>
-</nav>
+<!-- Header -->
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <!-- Logo -->
+        <a class="navbar-brand" href="index.html">ParkMe | MU</a>
+        <!-- Toggler for Mobile View -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="#contact">Contact</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#aboutUs">About Us</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#locations">Locations</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
 
 <!-- Hero Section -->
-<div class="jumbotron text-center">
-    <h1>Welcome to Maynooth University Parking Management</h1>
-    <p>Manage your parking seamlessly!</p>
-    <button id="checkInBtn" class="btn btn-primary btn-lg mr-2">Check In</button>
-    <button id="checkOutBtn" class="btn btn-secondary btn-lg">Check Out</button>
-</div>
-
-<!-- Main Content -->
-<div class="container">
-    <div class="row">
-        <!-- Removed Map Section -->
-
-        <!-- Parking Occupancy Chart Section -->
-        <div class="col-md-12">
-            <h3>Parking Occupancy</h3>
-            <canvas id="parkingChart"></canvas>
-        </div>
+<section id="hero" class="d-flex align-items-center justify-content-center">
+    <div class="container text-center text-white">
+        <h1 class="display-4">Welcome to ParkMe | MU</h1>
+        <p class="lead">Efficiently manage your campus parking with real-time availability and easy check-ins.</p>
+        <a href="map.html" class="btn btn-primary btn-lg mt-4">Check In</a>
     </div>
-</div>
+</section>
 
-<!-- Check-Out Confirmation Modal -->
-<div class="modal fade" id="checkoutModal" tabindex="-1" role="dialog" aria-labelledby="checkoutModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="checkoutModalLabel">Confirm Check-Out</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                Are you sure you want to check out?
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="confirmCheckoutBtn" class="btn btn-danger">Yes, Check Out</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            </div>
-        </div>
+<!-- Parking Occupancy Graph Section -->
+<section id="parkingGraph" class="container my-5">
+    <h2 class="text-center mb-4">Parking Occupancy by Hour in Maynooth</h2>
+    <div class="chart-container" style="position: relative; height:40vh; width:80vw; margin: auto;">
+        <canvas id="parkingChart"></canvas>
     </div>
-</div>
+</section>
 
-<!-- Include Scripts -->
-<!-- jQuery, Popper.js, Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<!-- Footer -->
+<footer class="bg-light text-center py-3">
+    &copy; 2024 ParkMe | MU. All rights reserved.
+</footer>
+
+<!-- jQuery, Popper.js, and Bootstrap 4 JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"
+        integrity="sha384-ZvpUoO/+Pw5yX3jR6n4q2d1gME8COkI3aXDd99Yg2ZZ7YYxr5zvCw4Smhjz4ikN9"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+        integrity="sha384-9/reFTGAW83EW2RDuTQu6NPxYpGqkVotSuhp7iF0cXtQkA1LeuI3Vwlf0I3Cc3ra"
+        crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+        integrity="sha384-XtCqOdoL4hPdxKNWNRNwqPzo0mrFfSd1ot1ixfPhJdpOMpFwse8iK+u5hwNToNRd"
+        crossorigin="anonymous"></script>
 <!-- Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<!-- Frontend JavaScript -->
+<!-- Custom JS -->
 <script src="js/app.js"></script>
 </body>
 </html>
