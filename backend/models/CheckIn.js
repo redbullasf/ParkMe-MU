@@ -1,4 +1,4 @@
-// models/CheckIn.js
+//backend / models/CheckIn.js
 
 const mongoose = require('mongoose');
 

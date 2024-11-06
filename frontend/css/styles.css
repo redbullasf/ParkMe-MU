@@ -1,16 +1,39 @@
 /* frontend/css/styles.css */
 
 /* Reset some default margins and paddings */
-body, h1, h2, p, ul, li {
+* {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 /* Body Styling */
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #DCDCDC; /* Light background for overall page */
+    background-color: #f8f9fa; /* Light background */
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Navbar Customizations */
+.navbar {
+    background-color: #343a40 !important; /* Dark background */
+}
+
+.navbar .navbar-brand, .navbar .nav-link {
+    color: #ffffff !important; /* White Text */
+}
+
+.navbar .nav-link:hover {
+    color: #ffd700 !important; /* Gold on Hover */
 }
 
 /* Hero Section Styling */
@@ -18,7 +41,7 @@ body {
     background-image: url('../images/hero-background.jpg'); /* Ensure the path is correct */
     background-size: cover;
     background-position: center;
-    height: 80vh; /* Adjust the height as needed */
+    height: 100vh; /* Full viewport height */
     position: relative;
     display: flex;
     align-items: center;
@@ -32,7 +55,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% opacity */
+    background-color: rgba(0, 0, 0, 0.6); /* Black overlay with 60% opacity */
     z-index: 1;
 }
 
@@ -40,77 +63,173 @@ body {
     position: relative;
     z-index: 2;
     max-width: 800px; /* Limit the width for better readability */
+    text-align: center;
+    color: #ffffff; /* White text */
 }
 
-#hero h1.display-4 {
-    font-size: 3rem;
-    font-weight: bold;
+#hero h1 {
+    font-size: 4rem;
+    margin-bottom: 1rem;
 }
 
-#hero p.lead {
+#hero p {
     font-size: 1.5rem;
+    margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
-    #hero h1.display-4 {
-        font-size: 2.5rem;
-    }
-    #hero p.lead {
-        font-size: 1.2rem;
-    }
+#hero .btn {
+    font-size: 1.2rem;
+    padding: 0.75rem 1.5rem;
 }
 
-/* Navbar Customizations */
-.navbar {
-    background-color: #778899 !important; /* Navy Blue */
+/* Features Section */
+#features {
+    padding: 4rem 0;
 }
 
-.navbar .navbar-brand, .navbar .nav-link {
-    color: #ffffff !important; /* White Text */
+#features h2 {
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
 }
 
-.navbar .nav-link:hover {
-    color: #ffd700 !important; /* Gold on Hover */
+#features .icon {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+    color: #007bff;
 }
 
-/* Parking Occupancy Graph Styling */
+#features h5 {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+#features p {
+    color: #6c757d;
+}
+
+/* Parking Occupancy Graph Section */
 #parkingGraph {
-    /* Ensures the graph section doesn't stretch */
-    padding: 2rem 0;
+    padding: 4rem 0;
+}
+
+#parkingGraph h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
 }
 
 .chart-container {
     position: relative;
     height: 40vh;
     width: 80vw;
-    max-width: 800px; /* Prevents excessive width on large screens */
-    margin: auto; /* Centers the graph */
-    background-color: #ffffff; /* White background for the graph area */
-    border: 1px solid #dee2e6; /* Light border for definition */
-    border-radius: 5px; /* Slightly rounded corners */
-    padding: 1rem; /* Inner padding */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    max-width: 800px;
+    margin: auto;
+    background-color: #ffffff;
+    border: 1px solid #dee2e6;
+    border-radius: 5px;
+    padding: 1rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Map Page Specific Styles */
+.map-frame {
+    border: 2px solid #343a40;
+    border-radius: 10px;
+    overflow: hidden;
+    position: relative;
+    height: 600px; /* Adjust height as needed */
+}
+
+#map {
+    width: 100%;
+    height: 100%;
+}
+
+#legend {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 10px;
+    line-height: 1.5;
+    position: absolute;
+    bottom: 30px;
+    left: 10px;
+    z-index: 1000;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.2);
+}
+
+#legend h5 {
+    margin-bottom: 10px;
+    font-weight: bold;
+}
+
+/* Recommendation Section */
+#recommendation {
+    margin-top: 20px;
+}
+
+#recommendation h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+}
+
+#recommendation p {
+    font-size: 1.2rem;
+}
+
+#recommendation .btn {
+    margin: 0.5rem;
+}
+
+/* Modal Styles */
+.modal-header {
+    border-bottom: 1px solid #dee2e6;
+}
+
+.modal-footer {
+    border-top: 1px solid #dee2e6;
 }
 
 /* Footer Styling */
 footer {
-    background-color: #778899;
-    color: #778899;
+    background-color: #343a40;
+    color: #ffffff;
+    width: 100%;
+    padding: 1rem 0;
     position: relative;
     bottom: 0;
-    width: 100%;
 }
 
-/* Optional: Smooth Scrolling */
+/* Smooth Scrolling */
 html {
     scroll-behavior: smooth;
 }
-/* Ensure modal has higher z-index */
-.modal {
-    z-index: 1050 !important;
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    #hero h1 {
+        font-size: 2.5rem;
+    }
+    #hero p {
+        font-size: 1.2rem;
+    }
+    #features h2 {
+        font-size: 2rem;
+    }
+    #features h5 {
+        font-size: 1.2rem;
+    }
 }
 
-/* Ensure backdrop is correctly positioned */
-.modal-backdrop {
-    z-index: 1040 !important;
+.available-marker i {
+    color: green;
+    font-size: 25px;
+}
+
+.occupied-marker i {
+    color: red;
+    font-size: 25px;
+}
+
+.recommended-marker i {
+    color: blue;
+    font-size: 30px;
 }

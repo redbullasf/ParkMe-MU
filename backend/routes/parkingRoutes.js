@@ -1,4 +1,4 @@
-// backend/routes/parkingRoutes.js
+// routes/parkingRoutes.js
 
 const express = require('express');
 const router = express.Router();
@@ -20,8 +20,8 @@ router.get('/', async (req, res) => {
 // Retrieves a recommended available parking spot
 router.get('/recommendation', async (req, res) => {
     try {
-        // Example recommendation logic: first available spot
-        const recommendedSpot = await ParkingSpot.findOne({ isAvailable: true });
+        // Recommendation logic: Find the available spot with the lowest current occupancy
+        const recommendedSpot = await ParkingSpot.findOne({ isAvailable: true }).sort({ currentOccupancy: 1 });
 
         if (!recommendedSpot) {
             return res.status(404).json({ message: 'No available parking spots at the moment.' });
@@ -34,11 +34,84 @@ router.get('/recommendation', async (req, res) => {
     }
 });
 
+// POST /api/parking/:id/checkin
+// Increases the occupancy count when a user checks in
+router.post('/:id/checkin', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const parkingSpot = await ParkingSpot.findById(id);
+        if (!parkingSpot) {
+            return res.status(404).json({ message: 'Parking spot not found.' });
+        }
+
+        if (parkingSpot.currentOccupancy >= parkingSpot.capacity) {
+            return res.status(400).json({ message: 'Parking spot is full.' });
+        }
+
+        // Increase current occupancy
+        parkingSpot.currentOccupancy += 1;
+        parkingSpot.isAvailable = parkingSpot.currentOccupancy < parkingSpot.capacity;
+
+        // Update hourly occupancy
+        const currentHour = new Date().getHours();
+        const occupancyRecord = parkingSpot.hourlyOccupancy.find(record => record.hour === currentHour);
+        if (occupancyRecord) {
+            occupancyRecord.occupiedSpaces = parkingSpot.currentOccupancy;
+        } else {
+            parkingSpot.hourlyOccupancy.push({
+                hour: currentHour,
+                occupiedSpaces: parkingSpot.currentOccupancy
+            });
+        }
+
+        await parkingSpot.save();
+        res.json({ message: 'Check-in successful.', parkingSpot });
+    } catch (error) {
+        console.error('Error during check-in:', error);
+        res.status(500).json({ message: 'Server Error: Unable to check in.' });
+    }
+});
+
+// POST /api/parking/:id/checkout
+// Decreases the occupancy count when a user checks out
+router.post('/:id/checkout', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const parkingSpot = await ParkingSpot.findById(id);
+        if (!parkingSpot) {
+            return res.status(404).json({ message: 'Parking spot not found.' });
+        }
+
+        if (parkingSpot.currentOccupancy > 0) {
+            parkingSpot.currentOccupancy -= 1;
+            parkingSpot.isAvailable = true;
+        }
+
+        // Update hourly occupancy
+        const currentHour = new Date().getHours();
+        const occupancyRecord = parkingSpot.hourlyOccupancy.find(record => record.hour === currentHour);
+        if (occupancyRecord) {
+            occupancyRecord.occupiedSpaces = parkingSpot.currentOccupancy;
+        } else {
+            parkingSpot.hourlyOccupancy.push({
+                hour: currentHour,
+                occupiedSpaces: parkingSpot.currentOccupancy
+            });
+        }
+
+        await parkingSpot.save();
+        res.json({ message: 'Check-out successful.', parkingSpot });
+    } catch (error) {
+        console.error('Error during check-out:', error);
+        res.status(500).json({ message: 'Server Error: Unable to check out.' });
+    }
+});
+
 // POST /api/parking/:id/feedback
 // Submits feedback for a specific parking spot
 router.post('/:id/feedback', async (req, res) => {
     const { id } = req.params;
-    const { busy } = req.body;
+    const { busy, spacesLeft } = req.body;
 
     try {
         const parkingSpot = await ParkingSpot.findById(id);
@@ -46,42 +119,28 @@ router.post('/:id/feedback', async (req, res) => {
             return res.status(404).json({ message: 'Parking spot not found.' });
         }
 
-        // Update parking spot status based on feedback
+        // Update occupancy based on feedback
+        if (typeof spacesLeft === 'number' && !isNaN(spacesLeft)) {
+            parkingSpot.currentOccupancy = parkingSpot.capacity - spacesLeft;
+            parkingSpot.isAvailable = parkingSpot.currentOccupancy < parkingSpot.capacity;
+        }
+
+        // Update busy status
         if (busy === 'yes') {
             parkingSpot.busy = true;
             parkingSpot.busyLevel += 1;
-            parkingSpot.isAvailable = false; // Assuming busy implies occupied
         } else if (busy === 'no') {
             parkingSpot.busy = false;
-            parkingSpot.isAvailable = true;
         } else {
-            return res.status(400).json({ message: 'Invalid feedback value.' });
+            return res.status(400).json({ message: 'Invalid feedback value for busy.' });
         }
 
         await parkingSpot.save();
 
-        res.json({ message: 'Feedback received and parking spot updated.' });
+        res.json({ message: 'Feedback received and parking spot updated.', parkingSpot });
     } catch (error) {
         console.error('Error submitting feedback:', error);
         res.status(500).json({ message: 'Server Error: Unable to submit feedback.' });
-    }
-});
-
-// GET /api/parking/occupancy
-// Retrieves data for parking occupancy chart
-router.get('/occupancy', async (req, res) => {
-    try {
-        const totalSpots = await ParkingSpot.countDocuments({});
-        const occupiedSpots = await ParkingSpot.countDocuments({ isAvailable: false });
-        const availableSpots = totalSpots - occupiedSpots;
-
-        res.json({
-            labels: ['Available', 'Occupied'],
-            values: [availableSpots, occupiedSpots]
-        });
-    } catch (error) {
-        console.error('Error fetching occupancy data:', error);
-        res.status(500).json({ message: 'Server Error: Unable to fetch occupancy data.' });
     }
 });
 

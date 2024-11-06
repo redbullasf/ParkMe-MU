@@ -1,132 +1,155 @@
-<!-- frontend/map.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Parking Map</title>
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Parking Map | ParkMe | MU</title>
+    <!-- Responsive Meta Tag -->
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <!-- Bootstrap 5 CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <!-- Leaflet CSS for Maps -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
     <!-- Font Awesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <!-- Leaflet.AwesomeMarkers CSS (optional) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <!-- Custom CSS -->
     <link rel="stylesheet" href="css/styles.css">
+    <!-- Custom styles for map.html (optional) -->
     <style>
-        /* Additional styles if necessary */
+        /* Ensure the map takes up the full height of its container */
+        #map {
+            height: 600px;
+        }
+        /* Positioning and styling for the legend */
         #legend {
-            background: white;
-            padding: 10px;
-            line-height: 1.5;
             position: absolute;
             bottom: 30px;
             left: 10px;
-            z-index: 1000;
+            background: white;
+            padding: 10px;
             border-radius: 5px;
-            box-shadow: 0 0 15px rgba(0,0,0,0.2);
+            z-index: 1000;
         }
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+        /* Adjust the margin of the main content to prevent overlapping with the navbar */
+        body, html {
+            height: 100%;
+            margin: 0;
         }
-        .modal-content {
-            background-color: #fefefe;
-            margin: 10% auto; /* 10% from the top and centered */
-            padding: 20px;
-            border: 1px solid #888;
-            width: 50%; /* Could be more or less, depending on screen size */
-            border-radius: 10px;
-        }
-        .close {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-            cursor: pointer;
+        main {
+            flex-grow: 1;
         }
     </style>
 </head>
 <body>
 <!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" href="#">Maynooth Parking</a>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <div class="container">
+        <!-- Logo -->
+        <a class="navbar-brand" href="index.html">ParkMe | MU</a>
+        <!-- Toggler for Mobile View -->
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <!-- Navigation Links -->
+        <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <ul class="navbar-nav">
+                <!-- Matched navigation items from index.html -->
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html#features">Features</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html#parkingGraph">Statistics</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html#contact">Contact</a>
+                </li>
+            </ul>
+        </div>
+    </div>
 </nav>
 
-<!-- Header -->
-<header class="text-center mt-4">
-    <h1>Parking Map</h1>
-    <button id="backBtn" class="btn btn-danger">Back to Home</button>
-</header>
+<!-- Main Content Wrapper -->
+<main class="flex-grow-1 d-flex flex-column">
+    <!-- Recommendation Section -->
+    <div id="recommendation" class="text-center my-4">
+        <h2>Recommended Parking Spot:</h2>
+        <p id="recommendedSpot">Loading recommendation...</p>
+        <!-- Confirm Arrival Button with Data Attributes -->
+        <button id="confirmBtn" class="btn btn-primary">Confirm Arrival</button>
+        <button id="leaveBtn" class="btn btn-warning d-none">Simulate Leaving</button>
+        <button id="backBtn" class="btn btn-secondary">Back to Home</button>
+    </div>
 
-<!-- Map Container -->
-<div id="map" style="height: 600px;"></div>
-
-<!-- Recommendation Section -->
-<div id="recommendation" class="text-center my-4">
-    <h2>Recommended Parking Spot:</h2>
-    <p id="recommendedSpot">Loading recommendation...</p>
-    <button id="confirmBtn" class="btn btn-primary">Confirm Arrival</button>
-</div>
-
-<!-- Legend -->
-<div id="legend">
-    <h3>Parking Spot Status</h3>
-    <i class="fa fa-car" style="color: green;"></i> Available<br>
-    <i class="fa fa-car" style="color: red;"></i> Occupied<br>
-    <i class="fa fa-thumbs-up" style="color: blue;"></i> Recommended
-</div>
+    <!-- Map Container with Frame -->
+    <div class="container mb-4">
+        <div class="map-frame position-relative">
+            <div id="map" class="w-100 h-100">
+                <!-- Legend placed inside the map container -->
+                <div id="legend">
+                    <h5>Parking Spot Status</h5>
+                    <i class="fa fa-car" style="color: green;"></i> Available<br>
+                    <i class="fa fa-car" style="color: red;"></i> Occupied<br>
+                    <i class="fa fa-thumbs-up" style="color: blue;"></i> Recommended
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 
 <!-- Questionnaire Modal -->
-<div id="questionnaireModal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Parking Experience</h2>
-        <form id="questionnaireForm">
-            <div class="form-group">
-                <label>Is the parking spot busy?</label><br>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="busy" id="busyYes" value="yes" required>
-                    <label class="form-check-label" for="busyYes">Yes</label>
-                </div>
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="radio" name="busy" id="busyNo" value="no">
-                    <label class="form-check-label" for="busyNo">No</label>
-                </div>
+<div class="modal fade" id="questionnaireModal" tabindex="-1" aria-labelledby="questionnaireModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h5 class="modal-title" id="questionnaireModalLabel">Parking Experience Feedback</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <!-- Optionally, include busy level -->
-            <!--
-            <div class="form-group">
-                <label for="busyLevel">Busy Level (1-10)</label>
-                <input type="number" class="form-control" id="busyLevel" name="busyLevel" min="1" max="10" required>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form id="questionnaireForm">
+                    <div class="mb-3">
+                        <label>Is the parking spot busy?</label><br>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="busy" id="busyYes" value="yes" required>
+                            <label class="form-check-label" for="busyYes">Yes</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="busy" id="busyNo" value="no">
+                            <label class="form-check-label" for="busyNo">No</label>
+                        </div>
+                    </div>
+                    <div class="mb-3">
+                        <label for="spacesLeft">Approximately how many spaces are left?</label>
+                        <input type="number" class="form-control" id="spacesLeft" name="spacesLeft" min="0" placeholder="Enter number of spaces">
+                    </div>
+                    <div class="mb-3">
+                        <label for="stayDuration">How long will you be staying?</label>
+                        <select class="form-select" id="stayDuration" name="stayDuration">
+                            <option value="" selected disabled>Select duration</option>
+                            <option value="30 minutes or less">30 minutes or less</option>
+                            <option value="1 hour">1 hour</option>
+                            <option value="2 hours">2 hours</option>
+                            <option value="More than 2 hours">More than 2 hours</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit Feedback</button>
+                </form>
             </div>
-            -->
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
+        </div>
     </div>
 </div>
+
+<!-- Footer -->
+<footer class="bg-dark text-center text-white py-3">
+    &copy; 2024 ParkMe | MU. All rights reserved.
+</footer>
 
 <!-- Include Scripts -->
 <!-- Leaflet JS -->
 <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-<!-- Leaflet.AwesomeMarkers JS (optional) -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet.awesome-markers/2.0.4/leaflet.awesome-markers.js"></script>
-<!-- jQuery, Popper.js, Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-<!-- Chart.js (Optional: If you have charts on map.html) -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<!-- Bootstrap 5 JS Bundle (includes Popper) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <!-- Frontend JavaScript for map.html -->
 <script src="js/map.js"></script>
 </body>

@@ -1,56 +1,49 @@
-// backend/server.js
+// server.js
+
+require('dotenv').config(); // Load environment variables at the very top
 
 const express = require('express');
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const cors = require('cors');
-
-// Load environment variables from .env file
-dotenv.config();
-
 const app = express();
 
-// CORS Configuration
-const corsOptions = {
-    origin: ['http://127.0.0.1:8080', 'http://localhost:8080'], // Frontend URLs
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-    credentials: true,
-    optionsSuccessStatus: 204,
-};
-
-// Use CORS middleware
-app.use(cors(corsOptions));
-
-// Middleware to parse JSON
+// Middleware
 app.use(express.json());
+app.use(cors());
+
+// Routes
+const parkingRoutes = require('./routes/parkingRoutes');
+const occupancyRoutes = require('./routes/occupancyRoutes');
+
+// Use Routes
+app.use('/api/parking', parkingRoutes);
+app.use('/api/occupancy', occupancyRoutes);
+
+// Start the server
+const PORT = process.env.PORT || 5001;
 
 // Connect to MongoDB
-mongoose.connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => console.log('MongoDB connected'))
-    .catch(err => {
+mongoose
+    .connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => {
+        console.log('MongoDB connected.');
+        // Only start the server after successful database connection
+        app.listen(PORT, () => {
+            console.log(`Server running on port ${PORT}`);
+        });
+    })
+    .catch((err) => {
         console.error('MongoDB connection error:', err);
-        process.exit(1); // Exit process with failure
+        process.exit(1); // Exit the process with an error code
     });
 
-// Basic Route to Verify Backend is Running
-app.get('/', (req, res) => {
-    res.send('Backend is running');
+// Handle undefined routes
+app.use((req, res, next) => {
+    res.status(404).json({ message: 'API endpoint not found.' });
 });
 
-// Import Parking Routes
-const parkingRoutes = require('./routes/parkingRoutes');
-
-// Use Parking Routes under /api/parking
-app.use('/api/parking', parkingRoutes);
-
-// Handle Undefined Routes
-app.use((req, res) => {
-    res.status(404).json({ message: 'Route not found.' });
+// Global error handler (optional but recommended)
+app.use((err, req, res, next) => {
+    console.error('Global error handler:', err);
+    res.status(500).json({ message: 'An unexpected error occurred.' });
 });
-
-// Start the Server
-const PORT = process.env.PORT || 5001;
-app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

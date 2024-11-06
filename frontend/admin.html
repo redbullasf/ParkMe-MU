@@ -1,0 +1,39 @@
+<!-- admin.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Panel | ParkMe | MU</title>
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+<div class="container mt-5">
+  <h2>Manual Occupancy Input</h2>
+  <form id="occupancyForm">
+    <div class="mb-3">
+      <label for="parkingSpot">Select Parking Spot:</label>
+      <select class="form-select" id="parkingSpot" required>
+        <!-- Options will be populated via JavaScript -->
+      </select>
+    </div>
+    <div class="mb-3">
+      <label for="hour">Hour (0-23):</label>
+      <input type="number" class="form-control" id="hour" min="0" max="23" required>
+    </div>
+    <div class="mb-3">
+      <label for="occupiedSpaces">Occupied Spaces:</label>
+      <input type="number" class="form-control" id="occupiedSpaces" min="0" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit Occupancy Data</button>
+  </form>
+</div>
+
+<!-- Bootstrap JS Bundle -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<!-- Admin JavaScript -->
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -39,39 +39,43 @@ function initializeParkingChart() {
             responsive: true,
             maintainAspectRatio: false, // Allows the chart to resize within its container
             scales: {
-                yAxes: [{
+                y: {
+                    beginAtZero: true,
+                    max: 100, // Maximum value set to 100%
                     ticks: {
-                        beginAtZero: true,
-                        max: 100, // Maximum value set to 100%
                         callback: function(value) {
                             return value + '%'; // Append '%' to y-axis labels
                         }
                     },
-                    scaleLabel: {
+                    title: {
                         display: true,
-                        labelString: 'Percentage Full (%)'
+                        text: 'Percentage Full (%)'
                     }
-                }],
-                xAxes: [{
-                    scaleLabel: {
+                },
+                x: {
+                    title: {
                         display: true,
-                        labelString: 'Time of Day'
+                        text: 'Time of Day'
                     }
-                }]
+                }
             },
-            title: {
-                display: true,
-                text: 'Parking Occupancy by Hour in Maynooth',
-                fontSize: 18
-            },
-            legend: {
-                display: false
-            },
-            tooltips: {
-                enabled: true,
-                callbacks: {
-                    label: function(tooltipItem, data) {
-                        return tooltipItem.yLabel + '%';
+            plugins: {
+                title: {
+                    display: true,
+                    text: 'Parking Occupancy by Hour in Maynooth',
+                    font: {
+                        size: 18
+                    }
+                },
+                legend: {
+                    display: false
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            return context.parsed.y + '%';
+                        }
                     }
                 }
             },
