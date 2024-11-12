@@ -1,4 +1,4 @@
-// routes/occupancyRoutes.js
+// backend/ routes/occupancyRoutes.js
 
 const express = require('express');
 const router = express.Router();

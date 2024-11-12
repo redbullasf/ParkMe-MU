@@ -1,4 +1,4 @@
-// models/ParkingSpot.js
+//backend/ models/ParkingSpot.js
 
 const mongoose = require('mongoose');
 

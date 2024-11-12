@@ -1,3 +1,4 @@
+<!-- frontend/ map.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -70,18 +71,8 @@
 
 <!-- Main Content Wrapper -->
 <main class="flex-grow-1 d-flex flex-column">
-    <!-- Recommendation Section -->
-    <div id="recommendation" class="text-center my-4">
-        <h2>Recommended Parking Spot:</h2>
-        <p id="recommendedSpot">Loading recommendation...</p>
-        <!-- Confirm Arrival Button with Data Attributes -->
-        <button id="confirmBtn" class="btn btn-primary">Confirm Arrival</button>
-        <button id="leaveBtn" class="btn btn-warning d-none">Simulate Leaving</button>
-        <button id="backBtn" class="btn btn-secondary">Back to Home</button>
-    </div>
-
     <!-- Map Container with Frame -->
-    <div class="container mb-4">
+    <div class="container mt-4 mb-4">
         <div class="map-frame position-relative">
             <div id="map" class="w-100 h-100">
                 <!-- Legend placed inside the map container -->
@@ -89,10 +80,21 @@
                     <h5>Parking Spot Status</h5>
                     <i class="fa fa-car" style="color: green;"></i> Available<br>
                     <i class="fa fa-car" style="color: red;"></i> Occupied<br>
+                    <i class="fa fa-car" style="color: orange;"></i> Staff Parking<br>
                     <i class="fa fa-thumbs-up" style="color: blue;"></i> Recommended
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Recommendation Section Moved Below Map -->
+    <div id="recommendation" class="text-center my-4">
+        <h2>Recommended Parking Spot:</h2>
+        <p id="recommendedSpot">Loading recommendation...</p>
+        <!-- Confirm Arrival Button with Data Attributes -->
+        <button id="confirmBtn" class="btn btn-primary">Confirm Arrival</button>
+        <button id="leaveBtn" class="btn btn-warning d-none">Simulate Leaving</button>
+        <button id="backBtn" class="btn btn-secondary">Back to Home</button>
     </div>
 </main>
 

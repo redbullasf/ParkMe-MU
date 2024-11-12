@@ -1,4 +1,4 @@
-// seed.js
+//backend/ seed.js
 
 require('dotenv').config(); // Load environment variables
 const mongoose = require('mongoose');

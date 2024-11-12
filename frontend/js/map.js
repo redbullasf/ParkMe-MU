@@ -23,6 +23,14 @@ const occupiedIcon = L.divIcon({
     popupAnchor: [0, -12],
 });
 
+const staffIcon = L.divIcon({
+    className: 'staff-marker',
+    html: '<i class="fa fa-car"></i>',
+    iconSize: [25, 25],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
+});
+
 const recommendedIcon = L.divIcon({
     className: 'recommended-marker',
     html: '<i class="fa fa-thumbs-up"></i>',
@@ -56,9 +64,18 @@ function initializeMap() {
         .then(response => response.json())
         .then(data => {
             data.forEach(spot => {
+                let icon;
+                if (spot.type === 'staff') {
+                    icon = staffIcon;
+                } else if (spot.isAvailable) {
+                    icon = availableIcon;
+                } else {
+                    icon = occupiedIcon;
+                }
+
                 const marker = L.marker([spot.coordinates.lat, spot.coordinates.lng], {
                     title: spot.name,
-                    icon: spot.isAvailable ? availableIcon : occupiedIcon
+                    icon: icon
                 }).addTo(map);
 
                 marker.bindPopup(`
@@ -106,7 +123,6 @@ function initializeMap() {
         });
 }
 
-
 // Event listener for Confirm Arrival button
 confirmBtn.addEventListener('click', () => {
     if (!selectedParkingId) {
@@ -128,7 +144,7 @@ confirmBtn.addEventListener('click', () => {
             if (spot) {
                 spot.currentOccupancy += 1;
                 spot.isAvailable = spot.currentOccupancy < spot.capacity;
-                spot.marker.setIcon(spot.isAvailable ? availableIcon : occupiedIcon);
+                spot.marker.setIcon(spot.isAvailable ? (spot.type === 'staff' ? staffIcon : availableIcon) : occupiedIcon);
                 spot.marker.getPopup().setContent(`
                     <strong>${spot.name}</strong><br>
                     ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
@@ -139,6 +155,10 @@ confirmBtn.addEventListener('click', () => {
             // Show the leave button
             confirmBtn.classList.add('d-none');
             leaveBtn.classList.remove('d-none');
+
+            // Show feedback modal immediately after check-in
+            const questionnaireModal = new bootstrap.Modal(document.getElementById('questionnaireModal'));
+            questionnaireModal.show();
         })
         .catch(error => {
             console.error('Error during check-in:', error);
@@ -167,17 +187,13 @@ leaveBtn.addEventListener('click', () => {
             if (spot) {
                 spot.currentOccupancy = Math.max(spot.currentOccupancy - 1, 0);
                 spot.isAvailable = true;
-                spot.marker.setIcon(availableIcon);
+                spot.marker.setIcon(spot.type === 'staff' ? staffIcon : availableIcon);
                 spot.marker.getPopup().setContent(`
                     <strong>${spot.name}</strong><br>
                     ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
                     <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a>
                 `);
             }
-
-            // Show feedback modal
-            const questionnaireModal = new bootstrap.Modal(document.getElementById('questionnaireModal'));
-            questionnaireModal.show();
 
             // Hide the leave button and show the confirm button
             leaveBtn.classList.add('d-none');
@@ -203,7 +219,7 @@ document.getElementById('questionnaireForm').addEventListener('submit', function
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify({ busy, spacesLeft })
+        body: JSON.stringify({ busy, spacesLeft, stayDuration })
     })
         .then(response => response.json())
         .then(data => {

@@ -1,4 +1,4 @@
-// server.js
+// backend/ server.js
 
 require('dotenv').config(); // Load environment variables at the very top
 

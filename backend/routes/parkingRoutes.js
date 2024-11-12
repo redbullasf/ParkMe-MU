@@ -1,4 +1,4 @@
-// routes/parkingRoutes.js
+// backend/routes/parkingRoutes.js
 
 const express = require('express');
 const router = express.Router();

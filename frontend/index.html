@@ -1,3 +1,4 @@
+<!-- frontend/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -80,7 +81,39 @@
         <canvas id="parkingChart"></canvas>
     </div>
 </section>
+<!-- Sticky Parking Status Widget -->
+<div id="parkingStatusWidget">
+    <i class="fas fa-parking"></i>
+    <p id="busyStatus">Loading status...</p>
+    <p id="occupancyPercentage">Loading occupancy...</p>
+    <p>Click for more Info</p>
+</div>
 
+<!-- More Info Modal -->
+<div class="modal fade" id="moreInfoModal" tabindex="-1" aria-labelledby="moreInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 id="moreInfoModalLabel" class="modal-title">Parking Status Details</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p><strong>Status:</strong> <span id="modalBusyStatus">Moderately Busy</span></p>
+                <p><strong>Occupancy:</strong> <span id="modalOccupancyPercentage">75%</span></p>
+                <hr>
+                <p><strong>Tips:</strong></p>
+                <ul>
+                    <li>Consider parking early to secure a spot.</li>
+                    <li>Use the navigation feature to find the least busy areas.</li>
+                    <li>Check real-time availability regularly.</li>
+                </ul>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 <!-- Footer -->
 <footer class="bg-dark text-center text-white py-3">
     &copy; 2024 ParkMe | MU. All rights reserved.
