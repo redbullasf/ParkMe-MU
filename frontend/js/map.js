@@ -4,19 +4,12 @@
 let map;
 let parkingSpotsMap = new Map();
 let selectedParkingId = null;
+let selectedSpot = null;
 let userMarker = null;
 
-// Define custom icons at the global scope
-const availableIcon = L.divIcon({
-    className: 'available-marker',
-    html: '<i class="fa fa-car"></i>',
-    iconSize: [25, 25],
-    iconAnchor: [12, 12],
-    popupAnchor: [0, -12],
-});
-
-const occupiedIcon = L.divIcon({
-    className: 'occupied-marker',
+// Define custom icons at the global scope using different Font Awesome icons
+const generalIcon = L.divIcon({
+    className: 'general-marker',
     html: '<i class="fa fa-car"></i>',
     iconSize: [25, 25],
     iconAnchor: [12, 12],
@@ -25,7 +18,23 @@ const occupiedIcon = L.divIcon({
 
 const staffIcon = L.divIcon({
     className: 'staff-marker',
-    html: '<i class="fa fa-car"></i>',
+    html: '<i class="fa fa-id-badge"></i>',
+    iconSize: [25, 25],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
+});
+
+const visitorIcon = L.divIcon({
+    className: 'visitor-marker',
+    html: '<i class="fa fa-user"></i>',
+    iconSize: [25, 25],
+    iconAnchor: [12, 12],
+    popupAnchor: [0, -12],
+});
+
+const occupiedIcon = L.divIcon({
+    className: 'occupied-marker',
+    html: '<i class="fa fa-times-circle"></i>',
     iconSize: [25, 25],
     iconAnchor: [12, 12],
     popupAnchor: [0, -12],
@@ -65,12 +74,14 @@ function initializeMap() {
         .then(data => {
             data.forEach(spot => {
                 let icon;
-                if (spot.type === 'staff') {
-                    icon = staffIcon;
-                } else if (spot.isAvailable) {
-                    icon = availableIcon;
-                } else {
+                if (spot.isAvailable === false) {
                     icon = occupiedIcon;
+                } else if (spot.type === 'staff') {
+                    icon = staffIcon;
+                } else if (spot.type === 'visitor') {
+                    icon = visitorIcon;
+                } else {
+                    icon = generalIcon;
                 }
 
                 const marker = L.marker([spot.coordinates.lat, spot.coordinates.lng], {
@@ -79,10 +90,27 @@ function initializeMap() {
                 }).addTo(map);
 
                 marker.bindPopup(`
-                    <strong>${spot.name}</strong><br>
-                    ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a>
+                    <div>
+                        <strong>${spot.name}</strong><br>
+                        ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a><br>
+                        <a href="#" class="select-spot-link" data-spot-id="${spot._id}">Select this spot</a>
+                    </div>
                 `);
+
+                marker.on('popupopen', function() {
+                    const popupNode = marker.getPopup().getElement();
+                    const selectSpotLink = popupNode.querySelector('.select-spot-link');
+                    selectSpotLink.addEventListener('click', function(event) {
+                        event.preventDefault();
+                        const spotId = event.target.dataset.spotId;
+                        selectedParkingId = spotId;
+                        selectedSpot = parkingSpotsMap.get(spotId);
+                        alert(`You have selected ${selectedSpot.name} as your parking spot.`);
+                        // Update the UI accordingly
+                        recommendedSpotElem.textContent = selectedSpot.name;
+                    });
+                });
 
                 // Store the spot data and marker in a Map for easy access
                 parkingSpotsMap.set(spot._id, { ...spot, marker });
@@ -144,11 +172,24 @@ confirmBtn.addEventListener('click', () => {
             if (spot) {
                 spot.currentOccupancy += 1;
                 spot.isAvailable = spot.currentOccupancy < spot.capacity;
-                spot.marker.setIcon(spot.isAvailable ? (spot.type === 'staff' ? staffIcon : availableIcon) : occupiedIcon);
+                let icon;
+                if (spot.isAvailable === false) {
+                    icon = occupiedIcon;
+                } else if (spot.type === 'staff') {
+                    icon = staffIcon;
+                } else if (spot.type === 'visitor') {
+                    icon = visitorIcon;
+                } else {
+                    icon = generalIcon;
+                }
+                spot.marker.setIcon(icon);
                 spot.marker.getPopup().setContent(`
-                    <strong>${spot.name}</strong><br>
-                    ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a>
+                    <div>
+                        <strong>${spot.name}</strong><br>
+                        ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a><br>
+                        <a href="#" class="select-spot-link" data-spot-id="${spot._id}">Select this spot</a>
+                    </div>
                 `);
             }
 
@@ -186,12 +227,25 @@ leaveBtn.addEventListener('click', () => {
             const spot = parkingSpotsMap.get(selectedParkingId);
             if (spot) {
                 spot.currentOccupancy = Math.max(spot.currentOccupancy - 1, 0);
-                spot.isAvailable = true;
-                spot.marker.setIcon(spot.type === 'staff' ? staffIcon : availableIcon);
+                spot.isAvailable = spot.currentOccupancy < spot.capacity;
+                let icon;
+                if (spot.isAvailable === false) {
+                    icon = occupiedIcon;
+                } else if (spot.type === 'staff') {
+                    icon = staffIcon;
+                } else if (spot.type === 'visitor') {
+                    icon = visitorIcon;
+                } else {
+                    icon = generalIcon;
+                }
+                spot.marker.setIcon(icon);
                 spot.marker.getPopup().setContent(`
-                    <strong>${spot.name}</strong><br>
-                    ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
-                    <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a>
+                    <div>
+                        <strong>${spot.name}</strong><br>
+                        ${spot.currentOccupancy}/${spot.capacity} spaces occupied<br>
+                        <a href="https://www.google.com/maps/dir/?api=1&destination=${spot.coordinates.lat},${spot.coordinates.lng}" target="_blank">Navigate Here</a><br>
+                        <a href="#" class="select-spot-link" data-spot-id="${spot._id}">Select this spot</a>
+                    </div>
                 `);
             }
 

@@ -11,7 +11,7 @@
 body {
     font-family: Arial, sans-serif;
     line-height: 1.6;
-    background-color: #f8f9fa; /* Light background */
+    background-color: #F3F3E0; /* Light background */
     display: flex;
     flex-direction: column;
     min-height: 100vh;
@@ -28,7 +28,8 @@ main {
     background-color: #343a40 !important; /* Dark background */
 }
 
-.navbar .navbar-brand, .navbar .nav-link {
+.navbar .navbar-brand,
+.navbar .nav-link {
     color: #ffffff !important; /* White Text */
 }
 
@@ -82,57 +83,109 @@ main {
     padding: 0.75rem 1.5rem;
 }
 
+/* Section Headings */
+.section-heading {
+    font-size: 2.5rem;
+    margin: 0; /* Remove margins */
+    padding: 2rem 0; /* Add padding for spacing */
+    text-align: center;
+    color: inherit;
+}
+
+/* Adjusted Section Styles to Remove Gaps */
+#features,
+#parkingGraph,
+#parkingInfo {
+    padding: 0; /* Remove padding from sections */
+    margin: 0;  /* Remove margin from sections */
+}
+
 /* Features Section */
 #features {
-    padding: 4rem 0;
+    background: linear-gradient(to bottom, #F3F3E0, #e0f7fa); /* Gradient from light background to light blue */
 }
 
-#features h2 {
-    font-size: 2.5rem;
-    margin-bottom: 2rem;
+#features .row {
+    margin: 0; /* Remove row margins */
 }
 
-#features .icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-    color: #007bff;
+#features .col-md-4 {
+    margin: 0; /* Remove column margins */
+}
+
+#features .fa-3x {
+    font-size: 4rem;
 }
 
 #features h5 {
     font-size: 1.5rem;
     margin-top: 1rem;
+    margin-bottom: 0.5rem;
 }
 
 #features p {
     color: #6c757d;
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0; /* Adjust margins */
 }
 
 /* Parking Occupancy Graph Section */
 #parkingGraph {
-    padding: 4rem 0;
-}
-
-#parkingGraph h2 {
-    font-size: 2rem;
-    margin-bottom: 2rem;
+    background: linear-gradient(to bottom, #e0f7fa, #e0e0e0); /* Gradient from light blue to light gray */
+    color: #343a40; /* Dark text */
 }
 
 .chart-container {
     position: relative;
-    height: 40vh; /* Fixed height to prevent infinite expansion */
-    width: 80vw;
-    max-width: 800px;
-    margin: auto;
-    background-color: #ffffff;
-    border: 1px solid #dee2e6;
-    border-radius: 5px;
-    padding: 1rem;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    height: 50vh; /* Adjust height as needed */
+    background-color: transparent; /* Transparent background */
+    margin: 0; /* Remove margin */
 }
 
 #parkingChart {
     width: 100%;
     height: 100%; /* Ensure it takes the height of its container */
+}
+
+/* Parking Information Section */
+#parkingInfo {
+    background: linear-gradient(to bottom, #e0e0e0, #f8f9fa); /* Gradient from light gray to very light gray */
+    color: #343a40; /* Dark text */
+    margin-bottom: 0; /* Remove margin at the bottom */
+}
+
+#parkingInfo .row {
+    margin: 0; /* Remove row margins */
+}
+
+#parkingInfo .col-md-6 {
+    margin: 0; /* Remove column margins */
+}
+
+#parkingInfo .card {
+    border: none;
+    border-radius: 10px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    margin: 0; /* Remove card margins */
+}
+
+#parkingInfo .card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+#parkingInfo .card-title {
+    font-size: 1.5rem;
+    margin-top: 1rem;
+}
+
+#parkingInfo .card-text {
+    font-size: 1.1rem;
+    margin: 0 0 1rem 0; /* Adjust margins */
+}
+
+#parkingInfo .btn-outline-primary {
+    border-radius: 50px;
 }
 
 /* Map Page Specific Styles */
@@ -195,12 +248,35 @@ main {
 
 /* Footer Styling */
 footer {
-    background-color: #343a40;
+    background: #343a40; /* Gradient from very light gray to dark gray */
     color: #ffffff;
-    width: 100%;
-    padding: 1rem 0;
-    position: relative;
-    bottom: 0;
+    margin: 0; /* Remove margin */
+    padding-top: 4rem;
+    padding-bottom: 2rem;
+}
+
+footer a {
+    color: #ffffff;
+}
+
+footer a:hover {
+    color: #ffd700;
+    text-decoration: none;
+}
+
+footer .social-icons a {
+    margin-right: 15px;
+    color: #ffffff;
+    transition: color 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    color: #ffd700;
+}
+
+/* Remove Margin from Top of First Section */
+#features {
+    margin-top: 0;
 }
 
 /* Smooth Scrolling */
@@ -208,24 +284,19 @@ html {
     scroll-behavior: smooth;
 }
 
-/* Responsive Adjustments */
-@media (max-width: 768px) {
-    #hero h1 {
-        font-size: 2.5rem;
-    }
-    #hero p {
-        font-size: 1.2rem;
-    }
-    #features h2 {
-        font-size: 2rem;
-    }
-    #features h5 {
-        font-size: 1.2rem;
-    }
+/* Map Marker Styles */
+.general-marker i {
+    color: green;
+    font-size: 25px;
 }
 
-.available-marker i {
-    color: green;
+.staff-marker i {
+    color: orange;
+    font-size: 25px;
+}
+
+.visitor-marker i {
+    color: purple;
     font-size: 25px;
 }
 
@@ -274,19 +345,31 @@ html {
     transition: color 0.3s ease;
 }
 
-/* Responsive adjustments for the widget */
+/* Responsive Adjustments */
 @media (max-width: 768px) {
-    #parkingStatusWidget {
-        bottom: 10px;
-        right: 10px;
-        padding: 10px 15px;
+    #hero h1 {
+        font-size: 2.5rem;
     }
 
-    #parkingStatusWidget p {
-        font-size: 14px;
+    #hero p {
+        font-size: 1.2rem;
     }
 
-    #parkingStatusWidget i {
-        font-size: 18px;
+    .section-heading {
+        font-size: 2rem;
+    }
+
+    #features .fa-3x {
+        font-size: 3rem;
+    }
+
+    #features h5 {
+        font-size: 1.2rem;
+    }
+
+    /* Footer Text Alignment */
+    footer .text-md-left,
+    footer .text-md-right {
+        text-align: center !important;
     }
 }

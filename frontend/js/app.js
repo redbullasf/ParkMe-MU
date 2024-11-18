@@ -25,17 +25,27 @@ document.addEventListener('DOMContentLoaded', () => {
 function initializeParkingChart(data) {
     const ctx = document.getElementById('parkingChart').getContext('2d');
 
+    // Determine colors based on occupancy percentage
+    const barColors = data.values.map(value => {
+        if (value < 50) {
+            return 'rgba(75, 192, 192, 0.8)'; // Green
+        } else if (value < 80) {
+            return 'rgba(255, 205, 86, 0.8)'; // Yellow
+        } else {
+            return 'rgba(255, 99, 132, 0.8)'; // Red
+        }
+    });
+
     // Create the bar chart
     const parkingChart = new Chart(ctx, {
         type: 'bar',
         data: {
             labels: data.labels, // Hours from 8 AM to 8 PM
             datasets: [{
-                label: 'Parking Occupancy (%)',
                 data: data.values, // Percentage full
-                backgroundColor: 'rgba(54, 162, 235, 0.6)', // Semi-transparent blue
-                borderColor: 'rgba(54, 162, 235, 1)', // Solid blue border
-                borderWidth: 1
+                backgroundColor: barColors, // Bar colors based on occupancy
+                borderColor: barColors.map(color => color.replace('0.8', '1')), // Solid border colors
+                borderWidth: 1,
             }]
         },
         options: {
@@ -44,52 +54,62 @@ function initializeParkingChart(data) {
             scales: {
                 y: {
                     beginAtZero: true,
-                    max: 100, // Maximum value set to 100%
-                    ticks: {
-                        callback: function(value) {
-                            return value + '%'; // Append '%' to y-axis labels
+                    max: 100,
+                    title: {
+                        display: false,
+                        text: 'Occupancy (%)',
+                        color: '#ffffff',
+                        font: {
+                            size: 14
                         }
                     },
-                    title: {
-                        display: true,
-                        text: 'Percentage Full (%)'
+                    ticks: {
+                        color: '#ffffff',
+                        stepSize: 20
+                    },
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.1)'
                     }
                 },
                 x: {
                     title: {
                         display: true,
-                        text: 'Time of Day'
+                        text: 'Time of Day',
+                        color: '#424242',
+                        font: {
+                            size: 14
+                        }
+                    },
+                    ticks: {
+                        color: '#ffffff',
+                        font: {
+                            size: 12
+                        }
+                    },
+                    grid: {
+                        display: false // Hide x-axis grid lines
                     }
                 }
             },
             plugins: {
-                title: {
-                    display: true,
-                    text: 'Parking Occupancy by Hour in Maynooth',
-                    font: {
-                        size: 18
-                    }
-                },
                 legend: {
-                    display: false
+                    display: false // Hide the legend
                 },
                 tooltip: {
                     enabled: true,
+                    backgroundColor: 'rgba(0, 0, 0, 0.7)',
+                    titleColor: '#ffffff',
+                    bodyColor: '#ffffff',
                     callbacks: {
                         label: function(context) {
                             return context.parsed.y + '%';
                         }
                     }
                 }
-            },
-            hover: {
-                mode: 'nearest',
-                intersect: true
             }
         }
     });
 }
-
 /**
  * Initializes and updates the Parking Status Widget.
  * @param {Object} data - The fake parking occupancy data.

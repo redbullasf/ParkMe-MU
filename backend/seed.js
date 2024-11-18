@@ -27,7 +27,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 100, // You can adjust the capacity as needed
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Eolas General Parking',
@@ -37,28 +38,10 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 80,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
-            {
-                name: 'Phoenix Paid Parking',
-                coordinates: { lat: 53.383842, lng: -6.603087 },
-                isAvailable: true,
-                busy: false,
-                busyLevel: 0,
-                capacity: 60,
-                currentOccupancy: 0,
-                hourlyOccupancy: []
-            },
-            {
-                name: 'Eolas Staff Parking',
-                coordinates: { lat: 53.385500, lng: -6.601992 },
-                isAvailable: true,
-                busy: false,
-                busyLevel: 0,
-                capacity: 50,
-                currentOccupancy: 0,
-                hourlyOccupancy: []
-            },
+
             {
                 name: 'Iontas Parking',
                 coordinates: { lat: 53.385294, lng: -6.601021 },
@@ -67,7 +50,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 70,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Student Accommodation Overflow',
@@ -77,7 +61,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 120,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Student Accommodation General',
@@ -87,7 +72,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 100,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'North Campus East Carpark',
@@ -97,7 +83,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 150,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Education Building Car Park',
@@ -107,7 +94,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 80,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'staff'
             },
             {
                 name: 'Kilcock Road Parking',
@@ -117,7 +105,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 90,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Library Parking',
@@ -127,7 +116,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 60,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'South Campus Logic House Green Parking',
@@ -137,17 +127,19 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 70,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
-                name: 'South Campus Pearsons Staff Parking',
+                name: 'South Campus Staff Parking',
                 coordinates: { lat: 53.379839, lng: -6.594029 },
                 isAvailable: true,
                 busy: false,
                 busyLevel: 0,
                 capacity: 50,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'staff'
             },
             {
                 name: 'Loftus Hall Parking',
@@ -157,7 +149,8 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 40,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Aldi Max 2 Hour Parking',
@@ -167,17 +160,19 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 30,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
-                name: 'Shopping Centre Paid Parking',
+                name: 'Shopping Centre Parking',
                 coordinates: { lat: 53.382265, lng: -6.595879 },
                 isAvailable: true,
                 busy: false,
                 busyLevel: 0,
                 capacity: 100,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
             },
             {
                 name: 'Maynooth GAA Pitch Parking',
@@ -187,9 +182,100 @@ async function seedDB() {
                 busyLevel: 0,
                 capacity: 80,
                 currentOccupancy: 0,
-                hourlyOccupancy: []
+                hourlyOccupancy: [],
+                type: 'general'
+            },
+            {
+                name: 'Eolas Staff Parking',
+                coordinates: { lat: 53.385500, lng: -6.601992 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 50,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'staff' // Updated to 'staff'
+            },
+            {
+                name: 'Education Building Car Park',
+                coordinates: { lat: 53.382649, lng: -6.597948 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 80,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'staff' // Updated to 'staff'
+            },
+            // New staff parking spots
+            {
+                name: 'Rye Hall Staff Parking',
+                coordinates: { lat: 53.385028, lng: -6.598246 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 40,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'staff'
+            },
+            {
+                name: 'Auxilla House Staff Parking',
+                coordinates: { lat: 53.383886, lng: -6.598039 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 30,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'staff'
+            },
+            {
+                name: 'Library Staff Parking',
+                coordinates: { lat: 53.381584, lng: -6.599895 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 25,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'staff'
+            },
+            // New visitor parking spots
+            {
+                name: 'Visitor Parking 1',
+                coordinates: { lat: 53.384677, lng: -6.597538 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 50,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'visitor'
+            },
+            {
+                name: 'Student Union Parking',
+                coordinates: { lat: 53.382368, lng: -6.603550 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 50,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'general'
+            },
+            {
+                name: 'Visitor Parking 2',
+                coordinates: { lat: 53.383902, lng: -6.603124 },
+                isAvailable: true,
+                busy: false,
+                busyLevel: 0,
+                capacity: 50,
+                currentOccupancy: 0,
+                hourlyOccupancy: [],
+                type: 'visitor'
             }
-            // Add more parking spots as needed
+            // Add more parking spots as needed ,
         ];
 
         await ParkingSpot.insertMany(parkingSpots);
