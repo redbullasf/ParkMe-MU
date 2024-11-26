@@ -71,6 +71,55 @@ router.post('/:id/checkin', async (req, res) => {
         res.status(500).json({ message: 'Server Error: Unable to check in.' });
     }
 });
+// GET /api/parking/:id/busy-level
+// Returns the estimated busy level at a given arrival time
+router.get('/:id/busy-level', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const { arrivalTime } = req.query;
+
+        const parkingSpot = await ParkingSpot.findById(id);
+        if (!parkingSpot) {
+            return res.status(404).json({ message: 'Parking spot not found.' });
+        }
+
+        // Since arrivalTime is in 'HH:mm' format, extract the hour
+        const [hourString, minuteString] = arrivalTime.split(':');
+        const arrivalHour = parseInt(hourString, 10);
+
+        // Find occupancy record for the arrival hour
+        const occupancyRecord = parkingSpot.hourlyOccupancy.find(record => record.hour === arrivalHour);
+        let busyLevel;
+        if (occupancyRecord) {
+            busyLevel = (occupancyRecord.occupiedSpaces / parkingSpot.capacity) * 100;
+        } else {
+            // If no record, assume current occupancy
+            busyLevel = (parkingSpot.currentOccupancy / parkingSpot.capacity) * 100;
+        }
+
+        res.json({ busyLevel: busyLevel.toFixed(2) });
+    } catch (error) {
+        console.error('Error fetching busy level:', error);
+        res.status(500).json({ message: 'Server Error: Unable to fetch busy level.' });
+    }
+});
+
+// GET /api/parking/:id
+// Returns the details of a specific parking spot
+router.get('/:id', async (req, res) => {
+    try {
+        const { id } = req.params;
+        const parkingSpot = await ParkingSpot.findById(id);
+        if (!parkingSpot) {
+            return res.status(404).json({ message: 'Parking spot not found.' });
+        }
+        res.json(parkingSpot);
+    } catch (error) {
+        console.error('Error fetching parking spot:', error);
+        res.status(500).json({ message: 'Server Error: Unable to fetch parking spot.' });
+    }
+});
+
 
 // POST /api/parking/:id/checkout
 // Decreases the occupancy count when a user checks out
